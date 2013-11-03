@@ -4,7 +4,16 @@
   "description": "A utility to hook methods/properties and return anything you want.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/*.test.js"
+    "test": "mocha test/*.test.js",
+    "blanket": {
+      "pattern": "//^((?!(node_modules|test)).)*$/",
+      "data-cover-flags": {
+        "debug": false
+      }
+    },
+    "travis-cov": {
+      "threshold": 96
+    }
   },
   "repository": {
     "type": "git",
@@ -16,8 +25,13 @@
     "test"
   ],
   "devDependencies": {
+    "blanket": "*",
     "mocha": "*"
   },
   "author": "Ayanamist Yang",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "coveralls": "~2.3.0",
+    "mocha-lcov-reporter": "0.0.1"
+  }
 }

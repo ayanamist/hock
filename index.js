@@ -1,8 +1,3 @@
-/* vim: set expandtab tabstop=2 shiftwidth=2 foldmethod=marker: */
-/**
- * @fileOverview 提供一个方便的钩子，可以钩住任何对象的任何方法
- */
-
 'use strict';
 
 /** the name of a property hidden in other objects */
