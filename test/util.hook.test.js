@@ -7,7 +7,7 @@
 
 var assert = require('assert');
 
-var hock = require('../');
+var mook = require('../');
 
 describe('util.hook', function () {
   describe('basic', function () {
@@ -20,11 +20,11 @@ describe('util.hook', function () {
         'configurable': true
       });
       assert.throws(function () {
-        assert.strictEqual(hock.hook(val, 'a',function () {
+        assert.strictEqual(mook.hook(val, 'a',function () {
           return 3;
         }), 1);
         assert.strictEqual(val.a, 3);
-        assert.strictEqual(hock.unhook(val, 'a'), 0);
+        assert.strictEqual(mook.unhook(val, 'a'), 0);
         assert.strictEqual(val.a, 2);
       }, /has been used/);
     });
@@ -38,11 +38,11 @@ describe('util.hook', function () {
         'configurable': false
       });
       assert.throws(function () {
-        assert.strictEqual(hock.hook(val, 'a',function () {
+        assert.strictEqual(mook.hook(val, 'a',function () {
           return 3;
         }), 1);
         assert.strictEqual(val.a, 3);
-        assert.strictEqual(hock.unhook(val, 'a'), 0);
+        assert.strictEqual(mook.unhook(val, 'a'), 0);
         assert.strictEqual(val.a, 1);
       }, /Cannot redefine property/);
     });
@@ -51,18 +51,18 @@ describe('util.hook', function () {
       var val = {
         'a': 2
       };
-      assert.strictEqual(hock.unhook(val, 'a'), 0);
+      assert.strictEqual(mook.unhook(val, 'a'), 0);
     });
 
   });
 
   describe('own property', function () {
     it('should hook static method', function () {
-      assert.strictEqual(hock.hook(Math, 'abs',function (val, fn) {
+      assert.strictEqual(mook.hook(Math, 'abs',function (val, fn) {
         return [val, fn(val)];
       }), 1);
       assert.deepEqual(Math.abs(-3), [-3, 3]);
-      assert.strictEqual(hock.unhook(Math, 'abs'), 0);
+      assert.strictEqual(mook.unhook(Math, 'abs'), 0);
       assert.strictEqual(Math.abs(-3), 3);
     });
 
@@ -76,27 +76,27 @@ describe('util.hook', function () {
       };
       var o = new O();
       assert.strictEqual(o.sum(), 5);
-      assert.strictEqual(hock.hook(o, 'sum', function () {
+      assert.strictEqual(mook.hook(o, 'sum', function () {
         return this.x * this.y;
       }), 1);
       assert.strictEqual(o.sum(), 6);
-      assert.strictEqual(hock.unhook(o, 'sum'), 0);
+      assert.strictEqual(mook.unhook(o, 'sum'), 0);
       assert.strictEqual(o.sum(), 5);
     });
 
     it('should work fine after multiple times for static method', function () {
-      assert.strictEqual(hock.hook(Math, 'abs',function (val, fn) {
+      assert.strictEqual(mook.hook(Math, 'abs',function (val, fn) {
         return [val, fn(val)];
       }), 1);
-      assert.strictEqual(hock.hook(Math, 'abs',function (val, fn) {
+      assert.strictEqual(mook.hook(Math, 'abs',function (val, fn) {
         return fn(val).map(function (v) {
           return v + 1;
         });
       }), 2);
       assert.deepEqual(Math.abs(-3), [-2, 4]);
-      assert.strictEqual(hock.unhook(Math, 'abs'), 1);
+      assert.strictEqual(mook.unhook(Math, 'abs'), 1);
       assert.deepEqual(Math.abs(-3), [-3, 3]);
-      assert.strictEqual(hock.unhook(Math, 'abs'), 0);
+      assert.strictEqual(mook.unhook(Math, 'abs'), 0);
       assert.strictEqual(Math.abs(-3), 3);
     });
 
@@ -110,17 +110,17 @@ describe('util.hook', function () {
       };
       var o = new O();
       assert.strictEqual(o.sum(), 5);
-      assert.strictEqual(hock.hook(o, 'sum', function () {
+      assert.strictEqual(mook.hook(o, 'sum', function () {
         return this.x * this.y;
       }), 1);
       assert.strictEqual(o.sum(), 6);
-      assert.strictEqual(hock.hook(o, 'sum', function () {
+      assert.strictEqual(mook.hook(o, 'sum', function () {
         return this.x * 2 + this.y * 2;
       }), 2);
       assert.strictEqual(o.sum(), 10);
-      assert.strictEqual(hock.unhook(o, 'sum'), 1);
+      assert.strictEqual(mook.unhook(o, 'sum'), 1);
       assert.strictEqual(o.sum(), 6);
-      assert.strictEqual(hock.unhook(o, 'sum'), 0);
+      assert.strictEqual(mook.unhook(o, 'sum'), 0);
       assert.strictEqual(o.sum(), 5);
     });
 
@@ -128,11 +128,11 @@ describe('util.hook', function () {
       var val = {
         'num': 3
       };
-      assert.strictEqual(hock.hook(val, 'num',function (orig) {
+      assert.strictEqual(mook.hook(val, 'num',function (orig) {
         return orig * 2;
       }), 1);
       assert.strictEqual(val.num, 6);
-      assert.strictEqual(hock.unhook(val, 'num'), 0);
+      assert.strictEqual(mook.unhook(val, 'num'), 0);
       assert.strictEqual(val.num, 3);
     });
 
@@ -140,16 +140,16 @@ describe('util.hook', function () {
       var val = {
         'num': 3
       };
-      assert.strictEqual(hock.hook(val, 'num',function (orig) {
+      assert.strictEqual(mook.hook(val, 'num',function (orig) {
         return orig * 2;
       }), 1);
-      assert.strictEqual(hock.hook(val, 'num',function (val) {
+      assert.strictEqual(mook.hook(val, 'num',function (val) {
         return val * val;
       }), 2);
       assert.strictEqual(val.num, 36);
-      assert.strictEqual(hock.unhook(val, 'num'), 1);
+      assert.strictEqual(mook.unhook(val, 'num'), 1);
       assert.strictEqual(val.num, 6);
-      assert.strictEqual(hock.unhook(val, 'num'), 0);
+      assert.strictEqual(mook.unhook(val, 'num'), 0);
       assert.strictEqual(val.num, 3);
     });
 
@@ -162,11 +162,11 @@ describe('util.hook', function () {
         },
         'configurable': true
       });
-      assert.strictEqual(hock.hook(val, 'a',function () {
+      assert.strictEqual(mook.hook(val, 'a',function () {
         return 3;
       }), 1);
       assert.strictEqual(val.a, 3);
-      assert.strictEqual(hock.unhook(val, 'a'), 0);
+      assert.strictEqual(mook.unhook(val, 'a'), 0);
       assert.strictEqual(val.a, 1);
     });
 
@@ -182,24 +182,24 @@ describe('util.hook', function () {
         'configurable': true
       });
       assert.strictEqual(val.sum, 3);
-      assert.strictEqual(hock.hook(val, 'sum',function (orig) {
+      assert.strictEqual(mook.hook(val, 'sum',function (orig) {
         return orig * 2;
       }), 1);
       assert.strictEqual(val.sum, 6);
       val.a = 5;
       assert.strictEqual(val.sum, 14);
-      assert.strictEqual(hock.unhook(val, 'sum'), 0);
+      assert.strictEqual(mook.unhook(val, 'sum'), 0);
       assert.strictEqual(val.sum, 7);
     });
 
     it('should works well with undefined property', function () {
       var val = {
       };
-      assert.strictEqual(hock.hook(val, 'a',function () {
+      assert.strictEqual(mook.hook(val, 'a',function () {
         return 3;
       }), 1);
       assert.strictEqual(val.a, 3);
-      assert.strictEqual(hock.unhook(val, 'a'), 0);
+      assert.strictEqual(mook.unhook(val, 'a'), 0);
       assert.strictEqual(val.a, undefined);
     });
   });
@@ -212,12 +212,12 @@ describe('util.hook', function () {
       O.prototype.getX = function () {
         return this.x;
       };
-      assert.strictEqual(hock.hook(O.prototype, 'getX', function () {
+      assert.strictEqual(mook.hook(O.prototype, 'getX', function () {
         return this.x * 2;
       }), 1);
       var o = new O();
       assert.strictEqual(o.getX(), 6);
-      assert.strictEqual(hock.unhook(O.prototype, 'getX'), 0);
+      assert.strictEqual(mook.unhook(O.prototype, 'getX'), 0);
       assert.strictEqual(o.getX(), 3);
     });
 
@@ -230,12 +230,12 @@ describe('util.hook', function () {
           return this.x;
         }
       };
-      assert.strictEqual(hock.hook(O.prototype, 'getX', function () {
+      assert.strictEqual(mook.hook(O.prototype, 'getX', function () {
         return this.x * 2;
       }), 1);
       var o = new O();
       assert.strictEqual(o.getX(), 6);
-      assert.strictEqual(hock.unhook(O.prototype, 'getX'), 0);
+      assert.strictEqual(mook.unhook(O.prototype, 'getX'), 0);
       assert.strictEqual(o.getX(), 3);
     });
 
@@ -244,11 +244,11 @@ describe('util.hook', function () {
       O.prototype.x = 1;
       var o = new O();
       assert.strictEqual(o.x, 1);
-      assert.strictEqual(hock.hook(o, 'x', function() {
+      assert.strictEqual(mook.hook(o, 'x', function() {
         return 2;
       }), 1);
       assert.strictEqual(o.x, 2);
-      assert.strictEqual(hock.unhook(o, 'x'), 0);
+      assert.strictEqual(mook.unhook(o, 'x'), 0);
       assert.strictEqual(o.x, 1);
     });
 
@@ -261,11 +261,11 @@ describe('util.hook', function () {
       };
       var o = new O(1);
       assert.strictEqual(o.getX(), 1);
-      assert.strictEqual(hock.hook(O.prototype, 'getX', function() {
+      assert.strictEqual(mook.hook(O.prototype, 'getX', function() {
         return this.x * 2;
       }), 1);
       assert.strictEqual(o.getX(), 2);
-      assert.strictEqual(hock.unhook(O.prototype, 'getX'), 0);
+      assert.strictEqual(mook.unhook(O.prototype, 'getX'), 0);
       assert.strictEqual(o.getX(), 1);
     });
 

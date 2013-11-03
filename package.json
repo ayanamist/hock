@@ -1,5 +1,5 @@
 {
-  "name": "hock",
+  "name": "mook",
   "version": "0.0.1",
   "description": "A utility to hook methods/properties and return anything you want.",
   "main": "index.js",
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/ayanamist/hock.git"
+    "url": "git://github.com/ayanamist/mook.git"
   },
   "keywords": [
     "hook",
