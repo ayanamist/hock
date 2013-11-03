@@ -1,0 +1,23 @@
+{
+  "name": "hock",
+  "version": "0.0.1",
+  "description": "A utility to hook methods/properties and return anything you want.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ayanamist/hock.git"
+  },
+  "keywords": [
+    "hook",
+    "mock",
+    "test"
+  ],
+  "devDependencies": {
+    "mocha": "*"
+  },
+  "author": "Ayanamist Yang",
+  "license": "MIT"
+}
