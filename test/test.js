@@ -271,23 +271,3 @@ describe('util.hook', function () {
 
   });
 });
-
-describe('setTimeout', function () {
-  before(function (done) {
-    mook.hook(Date, 'now', function () {
-      return 100000;
-    });
-    setTimeout(done, 0);
-  });
-
-  after(function (done) {
-    mook.unhook(Date, 'now');
-    done();
-  });
-
-  describe('case 1', function () {
-    it('should', function (done) {
-      setTimeout(done, 0);
-    });
-  });
-});
